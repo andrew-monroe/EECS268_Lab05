@@ -4,6 +4,10 @@
 #define EXECUTIVE_H
 
 #include <iostream>
+#include <fstream>
+#include <string>
+
+#include "LinkedList.h"
 
 class Executive
 {
@@ -12,6 +16,9 @@ class Executive
 
     private:
         int menu();
+        void listReversal();
+        void computeC();
+        void quadtree();
 
 };
 

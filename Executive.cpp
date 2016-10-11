@@ -8,15 +8,15 @@ void Executive::run()
 
     if (choice == 1)
     {
-
+        listReversal();
     }
     else if (choice == 2)
     {
-
+        computeC();
     }
     else if (choice == 3)
     {
-
+        quadtree();
     }
     else if (choice == 4)
     {
@@ -44,4 +44,39 @@ int Executive::menu()
     std::cin >> choice;
 
     return(choice);
+}
+
+void Executive::listReversal()
+{
+    std::string fileName = "";
+    LinkedList<std::string> myList;
+    std::string input;
+
+    std::cout << "Enter a filename: ";
+    std::cin.ignore(1, '\n');
+    std::getline(std::cin, fileName);
+
+    std::ifstream inFile;
+    inFile.open(fileName);
+
+    if (inFile.is_open())
+    {
+        while (!inFile.eof())
+        {
+            std::getline(inFile, input);
+            myList.addBack(input);
+        }
+    }
+
+    inFile.close();
+}
+
+void Executive::computeC()
+{
+
+}
+
+void Executive::quadtree()
+{
+
 }
