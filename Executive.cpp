@@ -64,11 +64,31 @@ void Executive::listReversal()
         while (!inFile.eof())
         {
             std::getline(inFile, input);
-            myList.addBack(input);
+
+            if (input != "")
+                myList.addBack(input);
         }
     }
 
     inFile.close();
+
+    std::cout << std::endl;
+
+    std::cout << "Original List:" << std::endl;
+    for (int x = 1; x <= myList.getLength(); x++)
+    {
+        std::cout << "Entry " << x << ": " << myList.getEntry(x) << std::endl;
+    }
+    std::cout << std::endl;
+
+    myList.reverseList();
+
+    std::cout << "Reversed List: " << std::endl;
+
+    for (int x = 1; x <= myList.getLength(); x++)
+    {
+        std::cout << "Entry " << x << ": " << myList.getEntry(x) << std::endl;
+    }
 }
 
 void Executive::computeC()
