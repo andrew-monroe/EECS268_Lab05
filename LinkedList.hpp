@@ -286,3 +286,36 @@ T LinkedList<T>::getEntry( int position ) const
 
     return(temp->getItem());
 }
+
+template <typename T>
+void LinkedList<T>::reverseList()
+{
+    Node<T>* temp = m_front;
+
+    if(isEmpty())
+    {
+        throw (std::runtime_error("problem"));
+    }
+
+    if (temp->getNextNode() != nullptr)
+    {
+        helper(temp);
+    }
+
+    temp->setNextNode(nullptr);
+}
+
+template <typename T>
+void LinkedList<T>::helper(Node<T>* temp)
+{
+    if (temp->getNextNode() != nullptr)
+    {
+        Node<T>* next = temp->getNextNode();
+        helper(next);
+        next->setNextNode(temp);
+    }
+    else
+    {
+        m_front = temp;
+    }
+}
