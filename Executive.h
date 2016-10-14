@@ -1,4 +1,9 @@
-
+/*
+*   Author:     Andrew Monroe
+*   Date:       10/14/16
+*   File Name:  Executive.h
+*   File Description: Header file for executive class.
+*/
 
 #ifndef EXECUTIVE_H
 #define EXECUTIVE_H

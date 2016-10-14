@@ -1,7 +1,7 @@
 /**
 *	@file LinkedList.h
 *	@author Andy Monroe
-*	@date 09-13-2016
+*	@date 10-11-2016
 *	@brief Header file for templated class LinkedList. LinkedList contains a
         series of Node values. LinkedList knows where the first Node is and how
         many Nodes there are, and uses this information in various methods to

@@ -1,7 +1,7 @@
 /**
 *	@file LinkedList.hpp
 *	@author Andy Monroe
-*	@date 09-29-2016
+*	@date 10-11-2016
 *	@brief Implementation file for templated class LinkedList. LinkedList
         contains a series of Node values. LinkedList knows where the first Node
         is and how many Nodes there are, and uses this information in various

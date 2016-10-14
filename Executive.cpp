@@ -1,4 +1,10 @@
-
+/*
+*   Author:     Andrew Monroe
+*   Date:       10/14/16
+*   File Name:  Executive.cpp
+*   File Description: Implementation for Executive class. Creates method
+        definitions for each of Executive's methods.
+*/
 
 #include "Executive.h"
 
