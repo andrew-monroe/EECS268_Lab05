@@ -12,6 +12,7 @@
 #include <fstream>
 #include <string>
 #include <stdexcept>
+#include <limits>
 
 #include "LinkedList.h"
 

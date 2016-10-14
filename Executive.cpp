@@ -16,31 +16,53 @@ void Executive::run()
 {
     int choice = 0;
 
-    while (choice != 4)
+    try
     {
-        //get user's choice
-        choice = menu();
+        while (choice != 4)
+        {
+            //get user's choice
+            choice = menu();
 
-        if (choice == 1)
-        {
-            //reverse a list
-            listReversal();
+            if (choice == 1)
+            {
+                try{
+                    //reverse a list
+                    listReversal();
+                }
+                catch(std::runtime_error &e)
+                {
+                    std::cout << "ERROR: " << e.what() << std::endl;
+                    std::cout << std::endl;
+                }
+            }
+            else if (choice == 2)
+            {
+                //compute C(n) as defined in prompt
+                compute();
+            }
+            else if (choice == 3)
+            {
+                try{
+                    //find "simple" regions of a 64x64 integer array of 0s and 1s
+                    quadtree();
+                }
+                catch(std::runtime_error &e)
+                {
+                    std::cout << "ERROR: " << e.what() << std::endl;
+                    std::cout << std::endl;
+                }
+            }
+            else
+            {
+                //quit the program
+                std::cout << "Goodbye!" << std::endl;
+            }
         }
-        else if (choice == 2)
-        {
-            //compute C(n) as defined in prompt
-            compute();
-        }
-        else if (choice == 3)
-        {
-            //find "simple" regions of a 64x64 integer array of 0s and 1s
-            quadtree();
-        }
-        else
-        {
-            //quit the program
-            std::cout << "Goodbye!" << std::endl;
-        }
+    }
+    catch(std::exception &e)
+    {
+        std::cout << "ERROR: " << e.what() << std::endl;
+        std::cout << std::endl;
     }
 }
 
@@ -122,7 +144,7 @@ void Executive::listReversal()
     }
     else
     {
-        throw(std::runtime_error("File named " << fileName <<
+        throw(std::runtime_error("File named " + fileName +
             " could not be found."));
     }
 
@@ -148,6 +170,8 @@ void Executive::listReversal()
     {
         std::cout << "Entry " << x << ": " << myList.getEntry(x) << std::endl;
     }
+
+    std::cout << std::endl;
 }
 
 /*
@@ -165,6 +189,8 @@ void Executive::compute()
         "that can be chosen from the integers 1 through n-1 so that the " <<
         "integers in each group add up to n." << std::endl;
 
+    std::cout << std::endl;
+
     do
     {
         std::cout << "Enter a value of n for c(n) to be evaluated at: ";
@@ -176,25 +202,38 @@ void Executive::compute()
             std::cout << "Invalid input. Try again. "<< std::endl;
             std::cout << std::endl;
         }
-    } while (target == 0);
+    } while (target < 1);
 
     std::cout << std::endl;
 
     //find out if the user wants to count permutations or not
     std::cout << "Would you like to count permutations? (y/n)" << std::endl;
-    std::cin >> permutations;
 
-    //run with or without permutations depending on user's choice
-    if (permutations == 'y' || permutations == 'Y')
+    do
     {
-        std::cout << "C(" << target << ") = " <<
-            computePermutations(target)-1 << std::endl;
-    }
-    else if (permutations == 'n' || permutations == 'N')
-    {
-        std::cout << "C(" << target << ") = " <<
-            computeCombinations(target,1)-1 << std::endl;
-    }
+        std::cin >> permutations;
+
+        std::cout << std::endl;
+
+        //run with or without permutations depending on user's choice
+        if (permutations == 'y' || permutations == 'Y')
+        {
+            std::cout << "C(" << target << ") = " <<
+                computePermutations(target)-1 << std::endl;
+        }
+        else if (permutations == 'n' || permutations == 'N')
+        {
+            std::cout << "C(" << target << ") = " <<
+                computeCombinations(target,1)-1 << std::endl;
+        }
+        else
+        {
+            std::cout << "Please answer with either y or n." << std::endl;
+        }
+    } while(permutations != 'y' && permutations != 'Y' &&
+                permutations != 'n' && permutations != 'N');
+
+    std::cout << std::endl;
 }
 
 /*
@@ -202,7 +241,7 @@ void Executive::compute()
 */
 int Executive::computePermutations(int input)
 {
-    int numPermutations = 0;
+    int numPermutations = 1;
 
     //sum up total of all of the numbers of permutations for numbers n-1 to input
     for(int x = 1; x < input; x++)
@@ -276,6 +315,8 @@ void Executive::quadtree()
 
     //call method to report all of the simple cells in the array
     reportSimpleCellsIn(arr, 0, 64, 0, 64);
+
+    std::cout << std::endl;
 
     //deallocate the memory for the array
     for (int x = 0; x < 64; x++)
