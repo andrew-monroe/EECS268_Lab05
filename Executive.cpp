@@ -224,7 +224,7 @@ void Executive::compute()
         else if (permutations == 'n' || permutations == 'N')
         {
             std::cout << "C(" << target << ") = " <<
-                computeCombinations(target,1)-1 << std::endl;
+                computeCombinations(target,1) << std::endl;
         }
         else
         {
@@ -260,6 +260,7 @@ int Executive::computeCombinations(int input, int temp)
 {
     int numCombinations = 0;
 
+    //sum up total of combinations up to half value of input
     for(int x = temp; x <= (input/2); x++)
     {
         numCombinations += computeCombinations(input - x, x) + 1;
@@ -314,7 +315,7 @@ void Executive::quadtree()
         for (int x = 0; x < 64; x++)
             delete[] arr[x];
         delete[] arr;
-        
+
         throw(std::runtime_error("Invalid file name."));
     }
 
