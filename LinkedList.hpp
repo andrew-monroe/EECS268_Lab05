@@ -287,34 +287,48 @@ T LinkedList<T>::getEntry( int position ) const
     return(temp->getItem());
 }
 
+/** @pre None.
+*   @post List is put into reverse order.
+*/
 template <typename T>
 void LinkedList<T>::reverseList()
 {
+    //make temp point at the front node
     Node<T>* temp = m_front;
 
+    //end the method if the list is empty
     if(isEmpty())
     {
-        throw (std::runtime_error("problem"));
+        return();
     }
 
+    //if temp is not the final node, call helper using temp as an argument
     if (temp->getNextNode() != nullptr)
     {
         helper(temp);
     }
 
+    //temp is now set to point to nullptr
     temp->setNextNode(nullptr);
 }
 
+/** @pre None.
+*   @post sets m_front to the opposite end of the linked list when passed the
+        final node of a linked list.
+*/
 template <typename T>
 void LinkedList<T>::helper(Node<T>* temp)
 {
+    //if temp is not the final node, call helper with the node after temp as
+    //  the argument, then turn that next node's nextNode pointer the other
+    //  direction
     if (temp->getNextNode() != nullptr)
     {
         Node<T>* next = temp->getNextNode();
         helper(next);
         next->setNextNode(temp);
     }
-    else
+    else //what was the last node is now set to first
     {
         m_front = temp;
     }

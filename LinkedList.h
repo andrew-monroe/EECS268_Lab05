@@ -98,12 +98,19 @@ class LinkedList
 		*/
 		T getEntry( int position ) const;
 
+		/** @pre None.
+		*   @post List is put into reverse order.
+		*/
 		void reverseList();
 
 	private:
 		Node<T>* m_front;
 		int m_length;
 
+		/** @pre None.
+		*   @post sets m_front to the opposite end of the linked list when passed the
+		        final node of a linked list.
+		*/
 		void helper(Node<T>* temp);
 };
 
