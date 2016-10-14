@@ -310,6 +310,11 @@ void Executive::quadtree()
     }
     else //file did not open/did not exist
     {
+        //deallocate the memory for the array
+        for (int x = 0; x < 64; x++)
+            delete[] arr[x];
+        delete[] arr;
+        
         throw(std::runtime_error("Invalid file name."));
     }
 
