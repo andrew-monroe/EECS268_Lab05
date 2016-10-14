@@ -18,8 +18,12 @@ class Executive
     private:
         int menu();
         void listReversal();
-        void computeC();
+        void compute();
+        int computePermutations(int input);
+        int computeCombinations(int input);
         void quadtree();
+        void reportSimpleCellsIn(int Q[64][64], int firstRow, int lastRow,
+            int firstCol, int lastCol);
 
 };
 
