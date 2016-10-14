@@ -202,16 +202,19 @@ void Executive::quadtree()
 
     reportSimpleCellsIn(arr, 0, 64, 0, 64);
 
+    for (int x = 0; x < 64; x++)
+        delete[] arr[x];
+    delete[] arr;
 }
 
-void Executive::reportSimpleCellsIn(int Q**, int firstRow, int lastRow,
+void Executive::reportSimpleCellsIn(int** Q, int firstRow, int lastRow,
     int firstCol, int lastCol)
 {
     int count = 0;
 
-    for(int x = 0; x < lastCol - firstCol; x++)
+    for(int x = firstCol; x < lastCol; x++)
     {
-        for (int y = 0; y < lastRow - firstRow; y++)
+        for (int y = firstRow; y < lastRow; y++)
         {
             count += Q[x][y];
         }
@@ -219,19 +222,53 @@ void Executive::reportSimpleCellsIn(int Q**, int firstRow, int lastRow,
 
     if (count == 0)
     {
-        std::cout << "Region from row " << firstRow << " to row " <<
-            lastRow << " and column " << firstCol << " to column " <<
-            lastCol << " is empty." << std::endl;
+        if (firstRow == lastRow-1)
+        {
+            std::cout << "Row\t" << firstRow;
+        }
+        else
+        {
+            std::cout << "Rows\t" << firstRow << "-" << lastRow-1;
+        }
+        if (firstCol == lastCol-1)
+        {
+            std::cout << "\tand column\t" << firstCol << ":\tEMPTY" << std::endl;
+        }
+        else
+        {
+            std::cout << "\tand columns\t" << firstCol << "-" <<
+            lastCol-1 << ":\tEMPTY" << std::endl;
+        }
     }
     else if (count == 1)
     {
-        std::cout << "Region from row " << firstRow << " to row " <<
-            lastRow << " and column " << firstCol << " to column " <<
-            lastCol << " contains a total value of one." << std::endl;
+        if (firstRow == lastRow-1)
+        {
+            std::cout << "Row\t" << firstRow;
+        }
+        else
+        {
+            std::cout << "Rows\t" << firstRow << "-" << lastRow-1;
+        }
+        if (firstCol == lastCol-1)
+        {
+            std::cout << "\tand column\t" << firstCol << ":\tONE" << std::endl;
+        }
+        else
+        {
+            std::cout << "\tand columns\t" << firstCol << "-" <<
+            lastCol-1 << ":\tONE" << std::endl;
+        }
     }
     else
     {
-        reportSimpleCellsIn(Q, firstRow, firstRow + (lastRow-firstRow)/2,
-            firstCol, firstCol + (lastCol-firstCol)/2);
+        reportSimpleCellsIn(Q, firstRow, (lastRow+firstRow)/2,
+            firstCol, (lastCol+firstCol)/2);
+        reportSimpleCellsIn(Q, (lastRow+firstRow)/2, lastRow,
+            firstCol, (lastCol+firstCol)/2);
+        reportSimpleCellsIn(Q, firstRow, (lastRow+firstRow)/2,
+            (lastCol+firstCol)/2, lastCol);
+        reportSimpleCellsIn(Q, (lastRow+firstRow)/2, lastRow,
+            (lastCol+firstCol)/2, lastCol);
     }
 }
