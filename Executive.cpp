@@ -3,68 +3,113 @@
 *   Date:       10/14/16
 *   File Name:  Executive.cpp
 *   File Description: Implementation for Executive class. Creates method
-        definitions for each of Executive's methods.
+*        definitions for each of Executive's methods.
 */
 
 #include "Executive.h"
 
+/*
+*   implementation for the run method, loops, calling the menu method to get
+*   user-input on what the program should do next
+*/
 void Executive::run()
 {
-    int choice = menu();
+    int choice = 0;
 
-    if (choice == 1)
+    while (choice != 4)
     {
-        listReversal();
-    }
-    else if (choice == 2)
-    {
-        compute();
-    }
-    else if (choice == 3)
-    {
-        quadtree();
-    }
-    else if (choice == 4)
-    {
+        //get user's choice
+        choice = menu();
 
-    }
-    else
-    {
-        //this won't be possible in the final program
-        std::cout << "ERROR. CRASHING NOW." << std::endl;
+        if (choice == 1)
+        {
+            //reverse a list
+            listReversal();
+        }
+        else if (choice == 2)
+        {
+            //compute C(n) as defined in prompt
+            compute();
+        }
+        else if (choice == 3)
+        {
+            //find "simple" regions of a 64x64 integer array of 0s and 1s
+            quadtree();
+        }
+        else
+        {
+            //quit the program
+            std::cout << "Goodbye!" << std::endl;
+        }
     }
 }
 
+/*
+*    implementation for the menu class, prints out the selection of options
+*    to the user, then takes the user's input for their choice, then returns
+*    that choice
+*/
 int Executive::menu()
 {
     int choice = 0;
 
-    std::cout << "Select an option:" << std::endl;
-    std::cout << "1. List Reversal" << std::endl;
-    std::cout << "2. Compute c(n)" << std::endl;
-    std::cout << "3. Quadtree" << std::endl;
-    std::cout << "4. Quit" << std::endl;
-    std::cout << std::endl;
+    //loop until user selects a valid choice
+    do
+    {
+        //output menu
+        std::cout << "Select an option:" << std::endl;
+        std::cout << "1. List Reversal" << std::endl;
+        std::cout << "2. Compute c(n)" << std::endl;
+        std::cout << "3. Quadtree" << std::endl;
+        std::cout << "4. Quit" << std::endl;
+        std::cout << std::endl;
 
-    std::cout << "Choice: ";
-    std::cin >> choice;
+        //receive user input
+        std::cout << "Choice: ";
+        std::cin >> choice;
+
+        //ensures user entered a valid choice
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Try again. "<< std::endl;
+            std::cout << std::endl;
+            choice = 0;
+        }
+        else if (choice < 1 || choice > 4)
+        {
+            std::cout << "Invalid choice. Try again." << std::endl;
+            std::cout << std::endl;
+        }
+    } while (choice < 1 || choice > 4);
 
     return(choice);
 }
 
+/*
+*   implementation for the listReversal method, user names a file with a list
+*   strings in it, the method reads that file into a LinkedList variable, the
+*   method then prints the list, reverses it, then prints the new list
+*/
 void Executive::listReversal()
 {
+    //variables
     std::string fileName = "";
     LinkedList<std::string> myList;
     std::string input;
 
+    //get user input for a file name
     std::cout << "Enter a filename: ";
     std::cin.ignore(1, '\n');
     std::getline(std::cin, fileName);
 
+    //create an in file object and open the user-specified file
     std::ifstream inFile;
     inFile.open(fileName);
 
+    //if the file could be opened, loop through the file's list entries and
+    //  add them to myList
     if (inFile.is_open())
     {
         while (!inFile.eof())
@@ -75,11 +120,18 @@ void Executive::listReversal()
                 myList.addBack(input);
         }
     }
+    else
+    {
+        throw(std::runtime_error("File named " << fileName <<
+            " could not be found."));
+    }
 
+    //no more use for in file, close it
     inFile.close();
 
     std::cout << std::endl;
 
+    //print the original list
     std::cout << "Original List:" << std::endl;
     for (int x = 1; x <= myList.getLength(); x++)
     {
@@ -87,32 +139,52 @@ void Executive::listReversal()
     }
     std::cout << std::endl;
 
+    //call reverseList method to reverse myList
     myList.reverseList();
 
+    //print the reversed list
     std::cout << "Reversed List: " << std::endl;
-
     for (int x = 1; x <= myList.getLength(); x++)
     {
         std::cout << "Entry " << x << ": " << myList.getEntry(x) << std::endl;
     }
 }
 
+/*
+*   Calculate c(n) as it has been specified below, either with or without
+*   permutations included in the answer
+*/
 void Executive::compute()
 {
+    //variables
     int target = 0;
     char permutations = 'n';
 
+    //describe c(n) and get user input for n
     std::cout << "Let c(n) be the number of different groups of integers " <<
         "that can be chosen from the integers 1 through n-1 so that the " <<
         "integers in each group add up to n." << std::endl;
-    std::cout << "Enter a value of n for c(n) to be evaluated at: ";
-    std::cin >> target;
+
+    do
+    {
+        std::cout << "Enter a value of n for c(n) to be evaluated at: ";
+        std::cin >> target;
+        if (std::cin.fail() || target < 1)
+        {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "Invalid input. Try again. "<< std::endl;
+            std::cout << std::endl;
+        }
+    } while (target == 0);
 
     std::cout << std::endl;
 
+    //find out if the user wants to count permutations or not
     std::cout << "Would you like to count permutations? (y/n)" << std::endl;
     std::cin >> permutations;
 
+    //run with or without permutations depending on user's choice
     if (permutations == 'y' || permutations == 'Y')
     {
         std::cout << "C(" << target << ") = " <<
@@ -121,74 +193,69 @@ void Executive::compute()
     else if (permutations == 'n' || permutations == 'N')
     {
         std::cout << "C(" << target << ") = " <<
-            computeCombinations(target)-1 << std::endl;
+            computeCombinations(target,1)-1 << std::endl;
     }
 }
 
+/*
+*   returns the number of permutations an integer has
+*/
 int Executive::computePermutations(int input)
 {
     int numPermutations = 0;
 
-    if (input == 0)
+    //sum up total of all of the numbers of permutations for numbers n-1 to input
+    for(int x = 1; x < input; x++)
     {
-        return(1);
-    }
-    else if (input > 0)
-    {
-        for(int x = input; x > 0; x--)
-        {
-            numPermutations += computePermutations(input - x);
-        }
-    }
-    else
-    {
-        throw(std::runtime_error("Unexpected value in computePermutations."));
+        numPermutations += computePermutations(input - x);
     }
 
+    //return the number of permutations found
     return(numPermutations);
 }
 
-int Executive::computeCombinations(int input)
+/*
+*   returns the number of combinations an integer has
+*/
+int Executive::computeCombinations(int input, int temp)
 {
     int numCombinations = 0;
 
-    if (input == 0)
+    for(int x = temp; x <= (input/2); x++)
     {
-        return(0);
-    }
-    else if (input == 1)
-    {
-        return(1);
-    }
-    else if (input > 1)
-    {
-        numCombinations = computeCombinations(input - 1) +
-            computeCombinations(input - 2);
-    }
-    else
-    {
-        throw(std::runtime_error("Unexpected value in computeCombinations."));
+        numCombinations += computeCombinations(input - x, x) + 1;
     }
 
     return(numCombinations);
 }
 
+/*
+*   implementation for quadtree method, takes in 64x64 array of integers from
+*       an input file, puts them in an array, then finds biggest "simple"
+*       regions and displays their location
+*/
 void Executive::quadtree()
 {
+    //variables
     std::string fileName;
     int** arr;
 
+    //create the heap allocations necessary for the 64x64 array of integers
     arr = new int*[64];
     for (int x = 0; x < 64; x++)
         arr[x] = new int[64];
 
+    //get the name of the input file from the user
     std::cout << "Enter file name: ";
     std::cin >> fileName;
     std::cout << std::endl;
 
+    //open the user-specified input file
     std::ifstream inFile;
     inFile.open(fileName);
 
+    //if the file exists, record each data value in its appropriate location in
+    //  the array
     if (inFile.is_open())
     {
         for (int x = 0; x < 64; x++)
@@ -199,25 +266,34 @@ void Executive::quadtree()
             }
         }
 
+        //inFile is finished being used, close it
         inFile.close();
     }
-    else
+    else //file did not open/did not exist
     {
         throw(std::runtime_error("Invalid file name."));
     }
 
+    //call method to report all of the simple cells in the array
     reportSimpleCellsIn(arr, 0, 64, 0, 64);
 
+    //deallocate the memory for the array
     for (int x = 0; x < 64; x++)
         delete[] arr[x];
     delete[] arr;
 }
 
+/*
+*   reports the simple cells in a given array of integers, splits array into
+*   four quadrents if one cell is not simple, and calls itself recursively on
+*   each of the four quadrents
+*/
 void Executive::reportSimpleCellsIn(int** Q, int firstRow, int lastRow,
     int firstCol, int lastCol)
 {
     int count = 0;
 
+    //get sum of all values in the array
     for(int x = firstCol; x < lastCol; x++)
     {
         for (int y = firstRow; y < lastRow; y++)
@@ -226,8 +302,10 @@ void Executive::reportSimpleCellsIn(int** Q, int firstRow, int lastRow,
         }
     }
 
+    //if all values were zero, output that it was an empty cell
     if (count == 0)
     {
+        //simple formatting organization and output
         if (firstRow == lastRow-1)
         {
             std::cout << "Row\t" << firstRow;
@@ -246,8 +324,10 @@ void Executive::reportSimpleCellsIn(int** Q, int firstRow, int lastRow,
             lastCol-1 << ":\tEMPTY" << std::endl;
         }
     }
+    //if the sum was 1, output that the value in the quadrent is one
     else if (count == 1)
     {
+        //simple formatting organization and output
         if (firstRow == lastRow-1)
         {
             std::cout << "Row\t" << firstRow;
@@ -266,14 +346,19 @@ void Executive::reportSimpleCellsIn(int** Q, int firstRow, int lastRow,
             lastCol-1 << ":\tONE" << std::endl;
         }
     }
+    //recursively call reportSimpleCellsIn on each quadrent
     else
     {
+        //NW
         reportSimpleCellsIn(Q, firstRow, (lastRow+firstRow)/2,
             firstCol, (lastCol+firstCol)/2);
+        //NE
         reportSimpleCellsIn(Q, (lastRow+firstRow)/2, lastRow,
             firstCol, (lastCol+firstCol)/2);
+        //SW
         reportSimpleCellsIn(Q, firstRow, (lastRow+firstRow)/2,
             (lastCol+firstCol)/2, lastCol);
+        //SE
         reportSimpleCellsIn(Q, (lastRow+firstRow)/2, lastRow,
             (lastCol+firstCol)/2, lastCol);
     }

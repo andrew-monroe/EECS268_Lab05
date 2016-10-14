@@ -9,8 +9,10 @@
 
 int main(int argc, char* argv[])
 {
+    //create Executive object
     Executive exec;
 
+    //execute run method in Executive
     exec.run();
 
     return(0);

@@ -297,19 +297,17 @@ void LinkedList<T>::reverseList()
     Node<T>* temp = m_front;
 
     //end the method if the list is empty
-    if(isEmpty())
+    if(!isEmpty())
     {
-        return();
-    }
+        //if temp is not the final node, call helper using temp as an argument
+        if (temp->getNextNode() != nullptr)
+        {
+            helper(temp);
+        }
 
-    //if temp is not the final node, call helper using temp as an argument
-    if (temp->getNextNode() != nullptr)
-    {
-        helper(temp);
+        //temp is now set to point to nullptr
+        temp->setNextNode(nullptr);
     }
-
-    //temp is now set to point to nullptr
-    temp->setNextNode(nullptr);
 }
 
 /** @pre None.
